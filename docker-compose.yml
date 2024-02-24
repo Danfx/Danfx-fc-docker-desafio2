@@ -1,0 +1,27 @@
+version: "3"
+services:
+  node:
+    image: "node:slim"
+    working_dir: /app
+    volumes:
+      - ./data:/app
+    ports:
+      - "3000:3000"
+    command: "npm run start"
+    networks:
+      - appnet
+    depends_on:
+      - db
+  db:
+    image: "mysql"
+    ports:
+      - "3306:3306"
+    networks:
+      - appnet
+    environment:
+      MYSQL_DATABASE: nodedb
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+networks:
+  appnet:
+    driver: bridge
